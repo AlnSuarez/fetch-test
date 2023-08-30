@@ -9,6 +9,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TableDogs from './TableDogs';
 import { arrOfStates } from '../helpers/listOfStates';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Multiselect() {
     const [Breeds, setBreeds] = React.useState([{ name: 'No items loaded' }]);
@@ -21,26 +22,15 @@ export default function Multiselect() {
     const [city, setCity] = React.useState('');
     const [total, setTotal] = React.useState(0);
 
+    
+
     React.useEffect(() => {
+        // onfirst render get list of Dogs
         getBreeds(setBreeds);
     }, []);
 
     const getFilteredDogs = async () => {
-        if (city.length == 0 || selectedState.length == 0) {
-            getDogs(
-                {
-                    // sort: {breed:"ASC"},
-                    breeds: selectedBreeds,
-                    zipCodes: [],
-                    ageMin: MinAge,
-                    ageMax: MaxAge,
-                    size: 20,
-                },
-                setDogsTemp,
-                setNextPrev,
-                setTotal
-            );
-        } else {
+            // First get all zipCodes, then get all filtered dogs
             searchLocations({ city: city, states: selectedState }).then(
                 (res) => {
                     const zipCodesTemp = res.data.results.map(
@@ -61,7 +51,6 @@ export default function Multiselect() {
                     );
                 }
             );
-        }
     };
 
     return (
@@ -69,11 +58,17 @@ export default function Multiselect() {
             <Typography
                 variant='h4'
                 gutterBottom
+                sx={{ textAlign: 'center' }}
             >
-                Filter Dogs
+                Match Dogs App
             </Typography>
-
-           
+            <Typography
+                variant='subtitle1'
+                gutterBottom
+                sx={{ textAlign: 'center', color: '#1E89D3' }}
+            >
+                Use the search filter to match you with a puppy
+            </Typography>
 
             <Grid
                 container
@@ -195,10 +190,7 @@ export default function Multiselect() {
                         variant='outlined'
                         onClick={() => {
                             getFilteredDogs();
-                            localStorage.setItem(
-                                'rowSelection',
-                                JSON.stringify("")
-                            );
+                            localStorage.removeItem('rowSelection');
                         }}
                     >
                         Filter
@@ -211,6 +203,7 @@ export default function Multiselect() {
                 next={NextPrev?.next}
                 previous={NextPrev?.prev}
             />
+            <Toaster position='top-left' />
         </Stack>
     );
 }

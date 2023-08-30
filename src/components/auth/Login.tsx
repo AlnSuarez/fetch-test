@@ -16,10 +16,10 @@ export default function Login() {
     const [Name, setName] = useState<String>('');
 
     // Creates a toast in every message sent
-    const notify = (message: Text) => toast(`${message}`);
+    const notify = (message: String) => toast.error(`${message}`);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault(); // Prevents the default behavior of the button click
+        event.preventDefault(); 
         // Register/Login method using API
         registerSite(
             {
@@ -100,6 +100,7 @@ export default function Login() {
                         >
                             Enter
                         </Button>
+                        
                     </Grid>
 
                     <Grid
@@ -109,17 +110,7 @@ export default function Login() {
                     <Toaster />
                 </Grid>
 
-                {/* <DogFilter/> */}
-
-                {/* <button
-                    onClick={(e) => {
-                        handleBreeds(e);
-                    }}
-                >
-                    breeds
-                </button> */}
-
-                {/* <InputComponent name='correo' /> */}
+               
             </FormContainer>
         </Container>
     );
